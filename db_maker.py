@@ -5,7 +5,7 @@ from sqlalchemy_utils import database_exists, create_database
 
 
 class Create:
-    uri = 'mysql+pymysql://root:isThisWeak!@localhost/test_db'
+    uri = 'mysql+pymysql://root:**@localhost/test_db'
     engine = create_engine(uri, echo=True)
 
     if not database_exists(engine.url):

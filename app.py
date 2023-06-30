@@ -2,7 +2,7 @@ from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 
-uri = 'mysql+pymysql://root:isThisWeak!@localhost/test_db'
+uri = 'mysql+pymysql://root:**@localhost/test_db'
 engine = create_engine(uri, echo=True)
 
 Session = sessionmaker(bind=engine)
