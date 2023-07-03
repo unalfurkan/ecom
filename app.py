@@ -34,14 +34,19 @@ def create_user(username, password):
     session.add(new_user)
     session.commit()
 
+
 # create_user("test_name33", "test_pw33")
 
 def authenticate_user():
     pass
 
 
-def view_user_profile():
-    pass
+def view_user_profile_with_id(id):
+    user_profile = session.get(User, id)
+    print(user_profile.username)
+
+
+view_user_profile_with_id(1)
 
 
 def create_product():
