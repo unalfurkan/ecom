@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, Column, Integer, String, ForeignKey
+from sqlalchemy import create_engine, Column, Integer, String, ForeignKey, Float
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 import os
@@ -29,36 +29,62 @@ class User(Base):
     password = Column(String)
 
 
+class Product(Base):
+    __tablename__ = 'product'
+    id = Column(Integer, primary_key=True)
+    name = Column(String)
+    description = Column(String)
+    price = Column(Float)
+
+
 def create_user(username, password):
     new_user = User(username=username, password=password)
     session.add(new_user)
     session.commit()
 
 
-# create_user("test_name33", "test_pw33")
+def get_user_profile_with_username(username):
+    user_profile = session.query(User).filter(User.username == username).first()
+    return user_profile
 
-def authenticate_user():
-    pass
+
+def authenticate_user(username, password):
+    user_to_login = get_user_profile_with_username(username)
+
+    if user_to_login:
+        print(user_to_login.password)
+        if user_to_login.password == password:
+            print("login success!")
+            return True
+        else:
+            print("login fail!")
+            return False
+    else:
+        print("user not found!")
 
 
 def view_user_profile_with_id(id):
     user_profile = session.get(User, id)
     print(user_profile.username)
+    return user_profile
 
 
-view_user_profile_with_id(1)
-
-
-def create_product():
-    pass
+def create_product(name, description, price):
+    new_product = Product(name=name, description=description, price=price)
+    session.add(new_product)
+    session.commit()
 
 
 def list_all_products():
-    pass
+    product_list = session.query(Product).all()
+    for i in product_list:
+        print(i.name, i.description, i.price)
+    return product_list
 
 
-def get_product_details():
-    pass
+def get_product_details_with_id(id):
+    product_to_list = session.get(Product, id)
+    print(product_to_list.name, product_to_list.description)
 
 
 def add_product_to_cart():
