@@ -37,6 +37,34 @@ class Product(Base):
     price = Column(Float)
 
 
+class Cart(Base):
+    __tablename__ = 'cart'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer)
+
+
+class CartItem(Base):
+    __tablename__ = 'cart_item'
+    id = Column(Integer, primary_key=True)
+    cart_id = Column(Integer)
+    product_id = Column(Integer)
+    product_count = Column(Integer)
+
+
+class Order(Base):
+    __tablename__ = 'order'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer)
+
+
+class OrderItem(Base):
+    __tablename__ = 'order_item'
+    id = Column(Integer, primary_key=True)
+    order_id = Column(Integer)
+    product_id = Column(Integer)
+    product_count = Column(Integer)
+
+
 def create_user(username, password):
     new_user = User(username=username, password=password)
     session.add(new_user)
@@ -85,6 +113,10 @@ def list_all_products():
 def get_product_details_with_id(id):
     product_to_list = session.get(Product, id)
     print(product_to_list.name, product_to_list.description)
+
+
+def create_new_cart():
+    pass
 
 
 def add_product_to_cart():
