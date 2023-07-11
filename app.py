@@ -19,7 +19,7 @@ engine = create_engine(uri, echo=True)
 
 Session = sessionmaker(bind=engine)
 session = Session()
-Base = declarative_base()
+Base = declarative_base()  # TODO learn how this works.
 
 
 class User(Base):
@@ -68,7 +68,11 @@ class OrderItem(Base):
 def create_user(username, password):
     new_user = User(username=username, password=password)
     session.add(new_user)
-    session.commit()
+    if session.commit():
+        print("user created.")
+        create_new_cart(new_user.id)
+    else:
+        print("failed to create user!")
 
 
 def get_user_profile_with_username(username):
@@ -115,12 +119,26 @@ def get_product_details_with_id(id):
     print(product_to_list.name, product_to_list.description)
 
 
-def create_new_cart():
-    pass
+def create_new_cart(user_id):
+    new_cart = Cart(user_id=user_id)
+    session.add(new_cart)
+    if session.commit():
+        print("cart created.")
+    else:
+        print("failed to create cart!")
 
 
-def add_product_to_cart():
-    pass
+def add_product_to_cart(cart_id, product_id):
+    """
+    create cart_item line with cart_id
+    add new row with same cart_id and product_id and quantity
+    """
+    new_product_to_cart = CartItem(cart_id=cart_id, product_id=product_id, product_count=1)
+    session.add(new_product_to_cart)
+    if session.commit():
+        print("item added to cart")
+    else:
+        print("failed to add item to cart")
 
 
 def update_cart_item_quantity():
